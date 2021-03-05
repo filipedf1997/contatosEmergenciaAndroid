@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -13,10 +16,12 @@ public  class UIEducacionalPermissao extends DialogFragment {
     String mensagem;
     String titulo;
     int codigo; //Código do Dialog
-    public UIEducacionalPermissao(String mensagem, String titulo, int codigo){
+    Uri contatoAtual;
+    public UIEducacionalPermissao(String mensagem, String titulo, int codigo, Uri contatoAtual){
         this.mensagem=mensagem;
         this.titulo=titulo;
         this.codigo=codigo;
+        this.contatoAtual=contatoAtual;
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -25,7 +30,10 @@ public  class UIEducacionalPermissao extends DialogFragment {
                 .setTitle(this.titulo);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
+                if(codigo == 2){
+                    Intent itLigar = new Intent(Intent.ACTION_DIAL,contatoAtual);
+                    startActivity(itLigar);
+                }
                 listener.onDialogPositiveClick(codigo);
             }
         });
@@ -35,7 +43,6 @@ public  class UIEducacionalPermissao extends DialogFragment {
 
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(int codigo);
-
     }
 
     // Use this instance of the interface to deliver action events
